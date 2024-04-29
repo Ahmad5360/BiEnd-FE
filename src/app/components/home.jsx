@@ -285,9 +285,9 @@ function HomePage() {
           <table className="w-full bg-white border border-solid border-gray-300 mb-4 ">
             <thead className="bg-slate-800 border-b border-solid border-gray-300 sticky top-0">
               <tr className=" text-white">
-                <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
+                {/* <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
                   Sr. no
-                </th>
+                </th> */}
                 <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
                   Company Name
                 </th>
@@ -306,9 +306,9 @@ function HomePage() {
                 <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
                   Ethnicity
                 </th>
-                <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
+                {/* <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
                   Total Results
-                </th>
+                </th> */}
               </tr>
             </thead>
 
@@ -322,9 +322,9 @@ function HomePage() {
                           key={index}
                           className={`${"border border-b border-gray-300"}`}
                         >
-                          <td className=" border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
+                          {/* <td className=" border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
                             {data.id}{" "}
-                          </td>
+                          </td> */}
                           <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
                             {data.Company}{" "}
                           </td>
@@ -343,9 +343,9 @@ function HomePage() {
                           <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
                             {data.ethnicity}{" "}
                           </td>
-                          <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
+                          {/* <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
                             {data.records}{" "}
-                          </td>
+                          </td> */}
                         </tr>
                       ))}
                   </tbody>
