@@ -1,12 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DatabaseX } from "react-bootstrap-icons";
 import Dropdown from "./common/dropdown";
 import Pagination from "./common/pagination";
+import { toast } from "react-toastify";
+import { getData } from "../apis";
 
 function HomePage() {
   const [loading, setLoading] = useState(false);
+  const [pageCache, setPageCache] = useState({});
+  const [pageNo, setPageNo] = useState(1);
+  const [total, setTotal] = useState();
+  const [response, setResponse] = useState();
+
   const data = [
     {
       id: 1,
@@ -247,7 +254,49 @@ function HomePage() {
       label: "Brazil",
     },
   ];
-  
+
+  const handleRefetch = async () => {
+    if (pageCache[pageNo]) {
+      const { cachedResponse, cachedTotal } = pageCache[pageNo];
+      setResponse(cachedResponse);
+      setTotal(cachedTotal);
+    } else {
+      setLoading(true);
+      try {
+        const res = await getData(pageNo);
+        const newData = res.data.data;
+        const newTotal = res.data.total;
+        setPageCache((prevCache) => ({
+          ...prevCache,
+          [pageNo]: { cachedResponse: newData, cachedTotal: newTotal },
+        }));
+        setResponse(newData);
+        setTotal(newTotal);
+      } catch (err) {
+        toast.error(err.response.data.error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // [pageNo, pageCache]);
+  };
+
+  useEffect(() => {
+    // setLoading(true);
+    getData()
+      .then((response) => {
+        console.log(response.data.data);
+        // setFilesList(response.data.files);
+        // setLoading(false);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+        // setLoading(false);
+        // setResponse(null);
+      });
+  }, [pageNo, pageCache]);
+
   return (
     <div>
       <div className="flex justify-end pr-3.5 gap-4 w-full">
