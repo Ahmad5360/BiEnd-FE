@@ -44,8 +44,8 @@ export const convertFile = async (token, data) => {
   return await axiosWithToken.post(`/converter/upload`, data);
 };
 
-export const getData = async () => {
-  return await axiosWithToken.get(`/diversity/data`);
+export const getData = async (pageNo) => {
+  return await instance.get(`/diversity/data?page=${pageNo}`);
 };
 
 export const deleteFiles = async (token, deleteData) => {

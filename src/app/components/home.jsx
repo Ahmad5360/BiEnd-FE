@@ -168,16 +168,28 @@ function HomePage() {
   ];
   const ethnicity = [
     {
-      value: "white",
-      label: "White",
+      value: "asina",
+      label: "Asian",
+    },
+    {
+      value: "hispanic",
+      label: "Hispanic",
     },
     {
       value: "black",
       label: "Black",
     },
     {
-      value: "brown",
-      label: "Brown",
+      value: "multiple",
+      label: "Multiple",
+    },
+    {
+      value: "native",
+      label: "Native",
+    },
+    {
+      value: "white",
+      label: "White",
     },
   ];
   const genders = [
@@ -191,6 +203,18 @@ function HomePage() {
     },
   ];
   const years = [
+    {
+      value: "2016",
+      label: "2016",
+    },
+    {
+      value: "2017",
+      label: "2017",
+    },
+    {
+      value: "2018",
+      label: "2018",
+    },
     {
       value: "2019",
       label: "2019",
@@ -206,10 +230,6 @@ function HomePage() {
     {
       value: "2022",
       label: "2022",
-    },
-    {
-      value: "2023",
-      label: "2023",
     },
   ];
   const countries = [
@@ -264,8 +284,9 @@ function HomePage() {
       setLoading(true);
       try {
         const res = await getData(pageNo);
-        const newData = res.data.data;
-        const newTotal = res.data.total;
+        const newData = res.data.data.data;
+        const newTotal = res.data.data.total;
+        console.log(newData);
         setPageCache((prevCache) => ({
           ...prevCache,
           [pageNo]: { cachedResponse: newData, cachedTotal: newTotal },
@@ -283,23 +304,30 @@ function HomePage() {
   };
 
   useEffect(() => {
-    // setLoading(true);
-    getData()
-      .then((response) => {
-        console.log(response.data.data);
-        // setFilesList(response.data.files);
-        // setLoading(false);
-      })
-      .catch((error) => {
-        toast.error(error.response.data.message);
-        // setLoading(false);
-        // setResponse(null);
-      });
-  }, [pageNo, pageCache]);
+    setLoading(true);
+    handleRefetch();
+    // getData(pageNo)
+    //   .then((response) => {
+    //     console.log(response.data.data);
+    //     setResponse(response.data.data.data)
+    //     // setFilesList(response.data.files);
+    //     // setLoading(false);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     // toast.error(error.response.data.message);
+    //     // setLoading(false);
+    //     // setResponse(null);
+    //   });
+  }, []);
 
   return (
     <div>
-      <div className="flex justify-end pr-3.5 gap-4 w-full">
+      <div
+        className={`flex justify-end pr-3.5 gap-4 w-full ${
+          response && response.length > 0 ? "" : "pointer-events-none"
+        }`}
+      >
         <div className="w-32">
           <Dropdown
             options={years}
@@ -329,107 +357,116 @@ function HomePage() {
           />
         </div>
       </div>
-      <div className="overflow-x-auto">
-        <div className="overflow-x-auto w-full table-wrp block max-h-[550px] ">
-          <table className="w-full bg-white border border-solid border-gray-300 mb-4 ">
-            <thead className="bg-slate-800 border-b border-solid border-gray-300 sticky top-0">
-              <tr className=" text-white">
-                {/* <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
+      <>
+        <div className="overflow-x-auto">
+          <div className="overflow-x-auto w-full table-wrp block max-h-[550px] min-h-[550px] ">
+            <table className="w-full bg-white border border-solid border-gray-300 mb-4 ">
+              <thead className="bg-slate-800 border-b border-solid border-gray-300 sticky top-0">
+                <tr className=" text-white">
+                  {/* <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
                   Sr. no
                 </th> */}
-                <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
-                  Company Name
-                </th>
-                <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
-                  Job Title
-                </th>
-                <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
-                  Year
-                </th>
-                <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
-                  Salary
-                </th>
-                <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
-                  Gender
-                </th>
-                <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
-                  Ethnicity
-                </th>
-                {/* <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
+                  <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
+                    Company Name
+                  </th>
+                  <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
+                    Job Title
+                  </th>
+                  <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
+                    Year
+                  </th>
+                  <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
+                    Salary
+                  </th>
+                  <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
+                    Gender
+                  </th>
+                  <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
+                    Ethnicity
+                  </th>
+                  {/* <th className="border-r h-full font-semibold border-solid border-gray-300 p-3 md:text-base text-sm">
                   Total Results
                 </th> */}
-              </tr>
-            </thead>
+                </tr>
+              </thead>
 
-            {!loading ? (
-              <>
-                {data && data.length > 0 ? (
-                  <tbody className="h-[550px] overflow-y-auto">
-                    {data &&
-                      data.map((data, index) => (
-                        <tr
-                          key={index}
-                          className={`${"border border-b border-gray-300"}`}
-                        >
-                          {/* <td className=" border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
+              {!loading ? (
+                <>
+                  {response && response.length > 0 ? (
+                    <tbody className="h-[550px] overflow-y-auto">
+                      {response &&
+                        response.map((data, index) => (
+                          <tr
+                            key={index}
+                            className={`${"border border-b border-gray-300"}`}
+                          >
+                            {/* <td className=" border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
                             {data.id}{" "}
                           </td> */}
-                          <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
-                            {data.Company}{" "}
-                          </td>
-                          <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
-                            {data.Job_Title}{" "}
-                          </td>
-                          <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
-                            {data.year}{" "}
-                          </td>
-                          <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
-                            {data.salary}{" "}
-                          </td>
-                          <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
-                            {data.generder}{" "}
-                          </td>
-                          <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
-                            {data.ethnicity}{" "}
-                          </td>
-                          {/* <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
+                            <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
+                              {data.company}{" "}
+                            </td>
+                            <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
+                              {data.job_category}{" "}
+                            </td>
+                            <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
+                              {data.year}{" "}
+                            </td>
+                            <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
+                              {data.salary}{" "}
+                            </td>
+                            <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
+                              {data.gender}{" "}
+                            </td>
+                            <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
+                              {data.ethnicity}{" "}
+                            </td>
+                            {/* <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
                             {data.records}{" "}
                           </td> */}
-                        </tr>
-                      ))}
-                  </tbody>
-                ) : (
-                  <tbody>
-                    <tr>
-                      <td colSpan="6" className="text-center py-6">
-                        <p className="text-gray-500 text-xl md:text-2xl flex items-center justify-center gap-2">
-                          <span>
-                            <DatabaseX />
-                          </span>
-                          No Data Found
-                        </p>
-                      </td>
-                    </tr>
-                  </tbody>
-                )}
-              </>
-            ) : (
-              <tbody>
-                <tr>
-                  <td colSpan="6" className="text-center py-6">
-                    <p className="text-gray-500 text-xl md:text-2xl flex items-center justify-center gap-2">
-                      Loading...
-                    </p>
-                  </td>
-                </tr>
-              </tbody>
-            )}
-          </table>
+                          </tr>
+                        ))}
+                    </tbody>
+                  ) : (
+                    <tbody>
+                      <tr>
+                        <td colSpan="6" className="text-center py-6">
+                          <p className="text-gray-500 text-xl md:text-2xl flex items-center justify-center gap-2">
+                            <span>
+                              <DatabaseX />
+                            </span>
+                            No Data Found
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  )}
+                </>
+              ) : (
+                <tbody>
+                  <tr>
+                    <td colSpan="6" className="text-center py-6">
+                      <p className="text-gray-500 text-xl md:text-2xl flex items-center justify-center gap-2">
+                        Loading...
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
+              )}
+            </table>
+          </div>
         </div>
-      </div>
-      <div className="my-4">
-        <Pagination />
-      </div>
+        {response && response.length > 0 && (
+          <div className="my-4">
+            <Pagination
+              total={total}
+              pageNo={pageNo}
+              setPageNo={setPageNo}
+              handlePageChange={handleRefetch}
+            />
+          </div>
+        )}
+      </>
     </div>
   );
 }

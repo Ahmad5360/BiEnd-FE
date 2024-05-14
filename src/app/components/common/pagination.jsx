@@ -1,12 +1,11 @@
 import React from "react";
 import ReactPaginate from "react-paginate";
 export default function Pagination({
-  total = 80,
-  pageNo = 1,
+  total,
+  pageNo,
   setPageNo,
-  itemsPerPage = 10,
+  itemsPerPage = 100,
   handlePageChange = () => {},
-  isDarkMode = false,
 }) {
   // const itemsPerPage = 10;
   const pageCount = Math.ceil(total / itemsPerPage);
