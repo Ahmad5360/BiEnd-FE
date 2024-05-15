@@ -6,13 +6,15 @@ import Dropdown from "./common/dropdown";
 import Pagination from "./common/pagination";
 import { toast } from "react-toastify";
 import { getData } from "../apis";
+import numeral from "numeral";
 
 function HomePage() {
   const [loading, setLoading] = useState(false);
   const [pageCache, setPageCache] = useState({});
   const [pageNo, setPageNo] = useState(1);
-  const [total, setTotal] = useState();
-  const [response, setResponse] = useState();
+  const [total, setTotal] = useState(null);
+  const [response, setResponse] = useState({});
+  const [query, setquery] = useState({});
 
   const data = [
     {
@@ -168,7 +170,7 @@ function HomePage() {
   ];
   const ethnicity = [
     {
-      value: "asina",
+      value: "asian",
       label: "Asian",
     },
     {
@@ -283,17 +285,24 @@ function HomePage() {
     } else {
       setLoading(true);
       try {
-        const res = await getData(pageNo);
+        let newQuery;
+        if (Object.keys(query).length > 0) {
+          newQuery = Object.fromEntries(
+            Object.entries(query).filter(([key, value]) => value !== null)
+          );
+        }
+        const res = await getData(pageNo, newQuery);
         const newData = res.data.data.data;
         const newTotal = res.data.data.total;
-        console.log(newData);
+        // console.log(newData);
+        setResponse(newData);
+        setTotal(newTotal);
         setPageCache((prevCache) => ({
           ...prevCache,
           [pageNo]: { cachedResponse: newData, cachedTotal: newTotal },
         }));
-        setResponse(newData);
-        setTotal(newTotal);
       } catch (err) {
+        setLoading(false);
         toast.error(err.response.data.error);
       } finally {
         setLoading(false);
@@ -303,23 +312,14 @@ function HomePage() {
     // [pageNo, pageCache]);
   };
 
+  // console.log(response);
+  // console.log(loading);
+
   useEffect(() => {
-    setLoading(true);
     handleRefetch();
-    // getData(pageNo)
-    //   .then((response) => {
-    //     console.log(response.data.data);
-    //     setResponse(response.data.data.data)
-    //     // setFilesList(response.data.files);
-    //     // setLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     // toast.error(error.response.data.message);
-    //     // setLoading(false);
-    //     // setResponse(null);
-    //   });
-  }, []);
+  }, [pageNo, query]);
+
+  console.log(query);
 
   return (
     <div>
@@ -332,28 +332,63 @@ function HomePage() {
           <Dropdown
             options={years}
             placeholder="Year"
-            onChange={(option) => console.log(option)}
+            onChange={(option) => {
+              setPageCache({});
+              setPageNo(1);
+              setResponse({});
+              setTotal(null);
+              if (option) {
+                setquery({ ...query, year: option.value });
+              } else setquery({ ...query, year: null });
+            }}
           />
         </div>
         <div className="w-32">
           <Dropdown
             placeholder="Ethncity"
             options={ethnicity}
-            onChange={(option) => console.log(option)}
+            onChange={(option) => {
+              setPageCache({});
+              setPageNo(1);
+              setResponse({});
+              setTotal(null);
+              if (option) {
+                setquery({ ...query, ethnicity: option.value });
+              } else setquery({ ...query, ethnicity: null });
+            }}
           />
         </div>
         <div className="w-32">
           <Dropdown
             options={genders}
             placeholder="Gender"
-            onChange={(option) => console.log(option)}
+            onChange={(option) => {
+              setPageCache({});
+              setPageNo(1);
+              setResponse({});
+              setTotal(null);
+              if (option) {
+                setquery({ ...query, gender: option.value });
+              } else setquery({ ...query, gender: null });
+            }}
           />
         </div>
         <div className="w-32">
           <Dropdown
             options={countries}
             placeholder="Country"
-            onChange={(option) => console.log(option)}
+            onChange={(option) => {
+              console.log(option);
+              // setPageCache({});
+              // setPageNo(1);
+              // setResponse({});
+              // setTotal(null);
+              // if (option) {
+              //   setquery({
+              //     country: option.value,
+              //   });
+              // } else setquery({ ...query, country: null });
+            }}
           />
         </div>
       </div>
@@ -413,7 +448,7 @@ function HomePage() {
                               {data.year}{" "}
                             </td>
                             <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
-                              {data.salary}{" "}
+                              ${numeral(data.salary).format("0,0")}{" "}
                             </td>
                             <td className="border-r h-full border-solid border-gray-300 text-center p-3 md:text-base text-sm">
                               {data.gender}{" "}
@@ -456,14 +491,9 @@ function HomePage() {
             </table>
           </div>
         </div>
-        {response && response.length > 0 && (
+        {!loading && response && response.length > 0 && (
           <div className="my-4">
-            <Pagination
-              total={total}
-              pageNo={pageNo}
-              setPageNo={setPageNo}
-              handlePageChange={handleRefetch}
-            />
+            <Pagination total={total} pageNo={pageNo} setPageNo={setPageNo} />
           </div>
         )}
       </>
