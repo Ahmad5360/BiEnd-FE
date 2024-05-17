@@ -324,7 +324,7 @@ function HomePage() {
   return (
     <div>
       <div
-        className={`flex justify-end pr-3.5 gap-4 w-full ${
+        className={`flex justify-end md:pr-3.5  gap-2 md:gap-4 w-full ${
           response && response.length > 0 ? "" : "pointer-events-none"
         }`}
       >

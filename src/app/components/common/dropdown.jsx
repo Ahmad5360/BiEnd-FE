@@ -6,7 +6,7 @@ function Dropdown({ options, onChange, placeholder }) {
     <div className="mb-4 bg-white">
       <Select
         options={options}
-        className="w-full bg-white"
+        className="w-full text-sm md:text-base bg-white"
         placeholder={placeholder}
         onChange={onChange}
         isClearable={true}
