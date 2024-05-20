@@ -15,7 +15,7 @@ export default function Pagination({
     // const newOffset = ((event.selected + 1) * itemsPerPage) % total;
   };
   return (
-    <div className="flex justify-end">
+    <div className="pagination-container flex justify-end items-center my-4">
       <ReactPaginate
         className={"pagination"}
         previousClassName={"page-item first-page"}

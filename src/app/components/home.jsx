@@ -319,16 +319,14 @@ function HomePage() {
     handleRefetch();
   }, [pageNo, query]);
 
-  console.log(query);
-
   return (
     <div>
       <div
-        className={`flex justify-end md:pr-3.5  gap-2 md:gap-4 w-full ${
+        className={`grid grid-cols-3 md:flex md:justify-end md:pr-3.5  gap-x-4 md:gap-4 w-full ${
           response && response.length > 0 ? "" : "pointer-events-none"
         }`}
       >
-        <div className="w-32">
+        <div className="w-26 md:w-32">
           <Dropdown
             options={years}
             placeholder="Year"
@@ -343,7 +341,7 @@ function HomePage() {
             }}
           />
         </div>
-        <div className="w-32">
+        <div className="w-26 md:w-32">
           <Dropdown
             placeholder="Ethncity"
             options={ethnicity}
@@ -358,7 +356,7 @@ function HomePage() {
             }}
           />
         </div>
-        <div className="w-32">
+        <div className="w-26 md:w-32">
           <Dropdown
             options={genders}
             placeholder="Gender"
@@ -373,7 +371,7 @@ function HomePage() {
             }}
           />
         </div>
-        <div className="w-32">
+        <div className="w-26 md:w-32">
           <Dropdown
             options={countries}
             placeholder="Country"
@@ -492,7 +490,7 @@ function HomePage() {
           </div>
         </div>
         {!loading && response && response.length > 0 && (
-          <div className="my-4">
+          <div>
             <Pagination total={total} pageNo={pageNo} setPageNo={setPageNo} />
           </div>
         )}
