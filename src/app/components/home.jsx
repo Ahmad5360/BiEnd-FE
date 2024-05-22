@@ -371,7 +371,7 @@ function HomePage() {
             }}
           />
         </div>
-        <div className="w-26 md:w-32">
+        {/* <div className="w-26 md:w-32">
           <Dropdown
             options={countries}
             placeholder="Country"
@@ -388,11 +388,16 @@ function HomePage() {
               // } else setquery({ ...query, country: null });
             }}
           />
-        </div>
+        </div> */}
       </div>
       <>
         <div className="overflow-x-auto">
           <div className="overflow-x-auto w-full table-wrp block max-h-[550px] min-h-[550px] ">
+            {false && (
+              <p className="pb-4">
+                Percentage of employees in selected year is :{" "}
+              </p>
+            )}
             <table className="w-full bg-white border border-solid border-gray-300 mb-4 ">
               <thead className="bg-slate-800 border-b border-solid border-gray-300 sticky top-0">
                 <tr className=" text-white">
