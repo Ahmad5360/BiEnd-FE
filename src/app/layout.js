@@ -13,6 +13,9 @@ const montserrat = Montserrat({
 export const metadata = {
   title: "BiEnd",
   description: "",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }) {
